@@ -1,4 +1,3 @@
-
 function app(people) {
     displayWelcome();
     runSearchAndMenu(people);
@@ -14,12 +13,10 @@ function runSearchAndMenu(people) {
 
     if (searchResults.length > 1) {
         DisplayPeople('Search Results', searchResults);
-    }
-    else if (searchResults.length === 1) {
+    } else if (searchResults.length === 1) {
         const person = searchResults[0];
         mainMenu(person, people);
-    }
-    else {
+    } else {
         alert('No one was found in the search.');
     }
 }
@@ -27,8 +24,7 @@ function runSearchAndMenu(people) {
 function searchPeopleDataSet(people) {
 
     const searchTypeChoice = validatedPrompt(
-        'Please enter in what type of search you would like to perform.',
-        ['id', 'name', 'traits']
+        'Please enter in what type of search you would like to perform.', ['id', 'name', 'traits']
     );
 
     let results = [];
@@ -40,70 +36,75 @@ function searchPeopleDataSet(people) {
             results = searchByName(people);
             break;
         case 'traits':
+
             //! TODO
-            // results = searchByTraits(people);
-            break;
-        default:
-            return searchPeopleDataSet(people);
+            let traitResults = people.map(person => {
+                    return person.traits;
+                }
+                results = searchByTraits(people);
+
+                break;
+
+                default:
+                return searchPeopleDataSet(people);
+            }
+
+            return people.filter(people => results.includes(people));
     }
 
-    return results;
-}
-
-function searchById(people) {
-    const idToSearchForString = prompt('Please enter the id of the person you are searching for.');
-    const idToSearchForInt = parseInt(idToSearchForString);
-    const idFilterResults = people.filter(person => person.id === idToSearchForInt);
-    return idFilterResults;
-}
-
-function searchByName(people) {
-    const firstNameToSearchFor = prompt('Please enter the the first name of the person you are searching for.');
-    const lastNameToSearchFor = prompt('Please enter the the last name of the person you are searching for.');
-    const fullNameSearchResults = people.filter(person => (person.firstName.toLowerCase() === firstNameToSearchFor.toLowerCase() && person.lastName.toLowerCase() === lastNameToSearchFor.toLowerCase()));
-    return fullNameSearchResults;
-}
-
-function mainMenu(person, people) {
-
-    const mainMenuUserActionChoice = validatedPrompt(
-        `Person: ${person.firstName} ${person.lastName}\n\nDo you want to know their full information, family, or descendants?`,
-        ['info', 'family', 'descendants', 'quit']
-    );
-
-    switch (mainMenuUserActionChoice) {
-        case "info":
-            //! TODO
-            // displayPersonInfo(person);
-            break;
-        case "family":
-            //! TODO
-            // let personFamily = findPersonFamily(person, people);
-            // displayPeople('Family', personFamily);
-            break;
-        case "descendants":
-            //! TODO
-            // let personDescendants = findPersonDescendants(person, people);
-            // displayPeople('Descendants', personDescendants);
-            break;
-        case "quit":
-            return;
-        default:
-            alert('Invalid input. Please try again.');
+    function searchById(people) {
+        const idToSearchForString = prompt('Please enter the id of the person you are searching for.');
+        const idToSearchForInt = parseInt(idToSearchForString);
+        const idFilterResults = people.filter(person => person.id === idToSearchForInt);
+        return idFilterResults;
     }
 
-    return mainMenu(person, people);
-}
+    function searchByName(people) {
+        const firstNameToSearchFor = prompt('Please enter the the first name of the person you are searching for.');
+        const lastNameToSearchFor = prompt('Please enter the the last name of the person you are searching for.');
+        const fullNameSearchResults = people.filter(person => (person.firstName.toLowerCase() === firstNameToSearchFor.toLowerCase() && person.lastName.toLowerCase() === lastNameToSearchFor.toLowerCase()));
+        return fullNameSearchResults;
+    }
 
-function displayPeople(displayTitle, peopleToDisplay) {
-    const formatedPeopleDisplayText = peopleToDisplay.map(person => `${person.firstName} ${person.lastName}`).join('\n');
-    alert(`${displayTitle}\n\n${formatedPeopleDisplayText}`);
-}
+    function mainMenu(person, people) {
 
-function validatedPrompt(message, acceptableAnswers) {
-    acceptableAnswers = acceptableAnswers.map(aa => aa.toLowerCase());
+        const mainMenuUserActionChoice = validatedPrompt(
+            `Person: ${person.firstName} ${person.lastName}\n\nDo you want to know their full information, family, or descendants?`, ['info', 'family', 'descendants', 'quit']
+        );
 
-    const builtPromptWithAcceptableAnswers = `${message} \nAcceptable Answers: ${acceptableAnswers.map(aa => `\n-> ${aa}`).join('')}`;
+        switch (mainMenuUserActionChoice) {
+            case "info":
+                //! TODO
+                displayPersonInfo(person);
+                break;
+            case "family":
+                //! TODO
+                let personFamily = findPersonFamily(person, people);
+                displayPeople('Family', personFamily);
+                break;
+            case "descendants":
+                //! TODO
+                let personDescendants = findPersonDescendants(person, people);
+                displayPeople('Descendants', personDescendants);
+                break;
+            case "quit":
+                return;
+            default:
+                alert('Invalid input. Please try again.');
+        }
+
+        return mainMenu(person, people);
+    }
+
+    function displayPeople(displayTitle, peopleToDisplay) {
+        const formatedPeopleDisplayText = peopleToDisplay.map(person => `${person.firstName} ${person.lastName}`).join('\n');
+        alert(`${displayTitle}\n\n${formatedPeopleDisplayText}`);
+    }
+
+    function validatedPrompt(message, acceptableAnswers) {
+        acceptableAnswers = acceptableAnswers.map(aa => aa.toLowerCase());
+
+        const builtPromptWithAcceptableAnswers = `${message} \nAcceptable Answers: ${acceptableAnswers.map(aa => `\n-> ${aa}`).join('')}`;
 
     const userResponse = prompt(builtPromptWithAcceptableAnswers).toLowerCase();
 
