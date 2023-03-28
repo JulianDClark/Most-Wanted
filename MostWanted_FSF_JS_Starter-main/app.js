@@ -38,16 +38,16 @@ function searchPeopleDataSet(people) {
         case 'traits':
 
             //! TODO
-            return people.filter(person => person[trait] === searchValue);
-            // results = searchByTraits(people);
-
+            const traitChoice = validatedPrompt(
+                'Please enter in what trait you would like to search for.', ['gender', 'dob', 'height', 'weight', 'eyeColor', 'occupation', 'reset', 'done', ]);
+            results = searchByTraits(people);
             break;
 
         default:
             return searchPeopleDataSet(people);
     }
 
-    return people.filter(people => results.includes(people));
+    return results;
 }
 
 function searchById(people) {
