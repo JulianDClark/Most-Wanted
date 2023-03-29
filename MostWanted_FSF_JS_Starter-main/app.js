@@ -81,11 +81,12 @@ function mainMenu(person, people) {
 
             // ).join('\n');
 
-            const infoUserActionChoice = alert(`Person: ${person.firstName} ${person.lastName}\n\nFull Information:\nAge: ${person.age}\nGender: ${person.gender}\nHeight: ${person.height}\nWeight: ${person.weight}\nEye Color: ${person.eyeColor}\nOccupation: ${person.occupation}\nDob: ${person.dob}\n\nFamily:\n${person.family}\n\nDescendants:\n
-                $ { infoUserActionChoice }`, );
+            const personInfo = alert(`Person: ${person.firstName} ${person.lastName}\n\nFull Information:\nAge: ${person.age}\nGender: ${person.gender}\nHeight: ${person.height}\nWeight: ${person.weight}\nEye Color: ${person.eyeColor}\nOccupation: ${person.occupation}\nDob: ${person.dob}\n\nFamily:\n${person.family}\n\nDescendants:\n
+                $ { infoUserActionChoice }`);
 
 
-            displayPersonInfo(person);
+            displayPersonInfo('info', person);
+            break;
 
         case "family":
             //! TODO
@@ -107,46 +108,30 @@ function mainMenu(person, people) {
 }
 
 function displayPeople(displayTitle, peopleToDisplay) {
-    const formatedPeopleDisplayText = peopleToDisplay.map(person => `
-                    $ { person.firstName }
-                    $ { person.lastName }
-                    `).join('\n');
-    alert(`
-                    $ { displayTitle }\
-                    n\ n$ { formatedPeopleDisplayText }
-                    `);
+    const formatedPeopleDisplayText = peopleToDisplay.map(person => `${person.firstName} ${person.lastName}`).join('\n');
+    alert(`${displayTitle}\n\n${formatedPeopleDisplayText}`);
 }
 
 function validatedPrompt(message, acceptableAnswers) {
     acceptableAnswers = acceptableAnswers.map(aa => aa.toLowerCase());
 
-    const builtPromptWithAcceptableAnswers = `
-                    $ { message }\
-                    nAcceptable Answers: $ { acceptableAnswers.map(aa => `\
-    n - > $ { aa }
-    `).join('') }
-                    `;
+    const builtPromptWithAcceptableAnswers = `${message} \nAcceptable Answers: ${acceptableAnswers.map(aa => `\n-> ${aa}`).join('')}`;
 
     const userResponse = prompt(builtPromptWithAcceptableAnswers).toLowerCase();
 
     if (acceptableAnswers.includes(userResponse)) {
         return userResponse;
-    } else {
-        alert(`
-                    "${userResponse}"
-                    is not an acceptable response.The acceptable responses include: \n$ { acceptableAnswers.map(aa => `\
-            n - > $ { aa }
-            `).join('') }\
-                    n\ nPlease
-                    try again.
-                    `);
+    }
+    else {
+        alert(`"${userResponse}" is not an acceptable response. The acceptable responses include:\n${acceptableAnswers.map(aa => `\n-> ${aa}`).join('')} \n\nPlease try again.`);
         return validatedPrompt(message, acceptableAnswers);
     }
 }
 
 function exitOrRestart(people) {
     const userExitOrRestartChoice = validatedPrompt(
-        'Would you like to exit or restart?', ['exit', 'restart']
+        'Would you like to exit or restart?',
+        ['exit', 'restart']
     );
 
     switch (userExitOrRestartChoice) {
