@@ -38,10 +38,27 @@ function searchPeopleDataSet(people) {
         case 'traits':
 
             //! TODO
-            // prompt the user to enter the traits they would like to search
+            // const traits = validatedPrompt('Please enter in what trait you would like to search for.', [$ { person.data }
+            //     $ { person.gender },
+            //     $ { person.dob },
+            //     $ { person.height },
+            //     $ { person.weight },
+            //     $ { person.eyeColor }
+            //     $ { person.occupation },
+            //     $ { person.reset }
+            // ]);
+            //prompt the user to enter the traits they would like to search
+            // const traitChoice = validatedPrompt(
+            //     `Please choose a trait to search for. \nCurrent number of matching records: ${people.length}
+            //     `, ['gender', 'dob', 'height', 'weight', 'eyeColor', 'occupation', 'reset', 'done']
+            // );
             const traitChoice = validatedPrompt(
-                'Please enter in what trait you would like to search for.', ['gender', 'dob', 'height', 'weight', 'eyeColor', 'occupation', 'reset', 'done', ]);
-            results = searchByTraits(people);
+                `Please choose a trait to search for. \nCurrent number of matching records: ${people.length}
+                Person data: ${person.data}, Gender: ${person.gender}, DOB: ${person.dob}, Height: ${person.height}, Weight: ${person.weight}, 
+                Eye color: ${person.eyeColor}, Occupation: ${person.occupation}, Reset: ${person.reset}, Done: ${person.done}
+                `, ['data', 'gender', 'dob', 'height', 'weight', 'eyeColor', 'occupation', 'reset', 'done']
+            );
+            results = searchByTraits('traits', people);
             break;
 
         default:
@@ -74,31 +91,24 @@ function mainMenu(person, people) {
     switch (mainMenuUserActionChoice) {
         case "info":
             //! TODO
-
-            // const infoUserActionChoice = map(
-            //     person.descendants,
-            //     descendant => descendant.firstName + '' + descendant.lastName
-
-            // ).join('\n');
-
-            const personInfo = alert(`Person: ${person.firstName} ${person.lastName}\n\nFull Information:\nAge: ${person.age}\nGender: ${person.gender}\nHeight: ${person.height}\nWeight: ${person.weight}\nEye Color: ${person.eyeColor}\nOccupation: ${person.occupation}\nDob: ${person.dob}\n\nFamily:\n${person.family}\n\nDescendants:\n
-                $ { infoUserActionChoice }`);
-
-
+            const personInfo = alert(`Full Information:\n\nName: ${person.firstName} ${person.lastName}\nGender: ${person.gender}\n Date of Birth: ${person.dob}\nHeight: ${person.height}\nWeight: ${person.weight}\nEye Color: ${person.eyeColor}\nOccupation: ${person.occupation}\nCurrent Spouse:${ person.currentSpouse}`);
             displayPersonInfo('info', person);
             break;
 
         case "family":
             //! TODO
+            const findPersonFamily = alert(`Family:\n\nName: ${person.firstName} ${person.lastName} ${person.currentSpouse} ${person.currentSpouse}`)
             let personFamily = findPersonFamily(person, people);
             displayPeople('Family', personFamily);
             break;
         case "descendants":
             //! TODO
+            const findPersonDescendants = alert(`Descendants:\n\nName: ${person.firstName} ${person.lastName} ${person.currentSpouse} ${person.currentSpouse}`)
             let personDescendants = findPersonDescendants(person, people);
             displayPeople('Descendants', personDescendants);
             break;
         case "quit":
+
             return;
         default:
             alert('Invalid input. Please try again.');
